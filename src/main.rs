@@ -1,4 +1,3 @@
-extern crate xml;
 
 use console::{style, Attribute};
 use std::env;
