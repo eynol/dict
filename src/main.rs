@@ -1,4 +1,3 @@
-
 use console::{style, Attribute};
 use std::env;
 mod yodaodict;
@@ -138,7 +137,7 @@ fn print_web_tanslation_content(xml_node_list: &Vec<(Vec<String>, String)>) {
                     }
                     print!("{} \n  ", style(value).magenta());
                 }
-                Some(last_word) if last_word.eq("cl") => (),
+                Some(last_word) if last_word.eq("cl") => {}
                 _ => {
                     print!("{}; ", value);
                 }
@@ -175,9 +174,9 @@ fn print_wiki(xml_node_list: &Vec<(Vec<String>, String)>) {
                 Some(word) if word.eq("entry") => {
                     println!("{}", style(format!("[ {} ]", value)).green())
                 }
-                Some(word) if word.eq("wikiType") => (),
+                Some(word) if word.eq("wikiType") => {}
                 Some(word) if word.eq("summary") => println!("  {}", value),
-                _ => (),
+                _ => {}
             }
         }
         print!("\n")

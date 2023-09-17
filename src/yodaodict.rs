@@ -1,5 +1,5 @@
-use xml::reader::{EventReader, XmlEvent};
 use url::Url;
+use xml::reader::{EventReader, XmlEvent};
 const  TRANSLATE_URL:&str = "https://dict.youdao.com/fsearch?version=1.1&client=deskdict&keyfrom=chrome.extension&doctype=xml&xmlVersion=3.2";
 
 // Language: rust
@@ -13,14 +13,15 @@ struct XmlData {
     cdata: String,
     character: String,
 }
+static EMPTY_STR: &str = "";
 pub fn get_xml_node_list<'a>(xmldata: &'a str) -> Vec<(Vec<String>, String)> {
     let mut xml_node_list: Vec<(Vec<String>, String)> = Vec::new();
     let parser = EventReader::from_str(xmldata);
     let mut xml_paths: Vec<String> = Vec::new();
 
     let mut temp_data = XmlData {
-        cdata: "".to_string(),
-        character: "".to_string(),
+        cdata: EMPTY_STR.to_string(),
+        character: EMPTY_STR.to_string(),
     };
 
     for e in parser {
@@ -54,8 +55,8 @@ pub fn get_xml_node_list<'a>(xmldata: &'a str) -> Vec<(Vec<String>, String)> {
                         }
                     }
                 }
-                temp_data.cdata = "".to_string();
-                temp_data.character = "".to_string();
+                temp_data.cdata = EMPTY_STR.to_string();
+                temp_data.character = EMPTY_STR.to_string();
                 if !name.to_string().eq("yodaodict") {
                     xml_paths.pop();
                 }
