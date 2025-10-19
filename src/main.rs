@@ -2,11 +2,11 @@ use clap::{command, Parser};
 mod yodaodict;
 use std::env;
 
-/// Simple program to greet a person
+/// English word translator in cli
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 pub struct Args {
-    /// Name of the person to greet
+    /// word,英文单词
     #[arg(long, default_value_t = false)]
     debug: bool,
 

@@ -6,7 +6,7 @@ use serde::Deserialize;
 use url::Url;
 
 use crate::Args;
-const  TRANSLATE_URL:&str = "https://dict.youdao.com/fsearch?version=1.1&client=deskdict&keyfrom=chrome.extension&doctype=xml&xmlVersion=3.2";
+const  TRANSLATE_URL:&str = "http://dict.youdao.com/fsearch?version=1.1&client=deskdict&keyfrom=chrome.extension&doctype=xml&xmlVersion=3.2";
 
 struct YouDaoTranslator<'a> {
     args: &'a Args,
@@ -17,7 +17,7 @@ struct YouDaoTranslator<'a> {
 struct YouDaoDict<'a> {
     return_phrase: Option<Cow<'a, str>>,
 
-    lang: Cow<'a, str>,
+    lang: Option<Cow<'a, str>>,
 
     phonetic_symbol: Option<Cow<'a, str>>,
 
@@ -94,11 +94,14 @@ impl<'a> YouDaoDict<'a> {
                 println!("  {}", wiki.info.data.summary);
             }
             if let Some(person) = &entity.person_data {
-                println!(
-                    "{}",
-                    style(format!("[ {} ]", person.name.as_ref().unwrap())).green()
-                );
-                println!("  {}", person.summary.as_ref().unwrap());
+                if person.name.is_some() {
+                    println!(
+                        "{}",
+                        style(format!("[ {} ]", person.name.as_ref().unwrap())).green()
+                    );
+                    println!("  {}", person.nationality.as_ref().unwrap());
+                    println!("  {}", person.summary.as_ref().unwrap());
+                }
             }
             println!()
         }
