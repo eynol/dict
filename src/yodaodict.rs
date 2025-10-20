@@ -71,7 +71,15 @@ impl<'a> YouDaoDict<'a> {
                         format!(
                             "{}{}",
                             &trans.value.trim(),
-                            &trans.cls.as_ref().map_or_else(|| { "" }, |x| { &x.cl })
+                            trans.cls.as_ref().map_or_else(
+                                || { "".to_owned() },
+                                |x| {
+                                    x.cl.iter()
+                                        .map(|f| format!("[{}]", f))
+                                        .collect::<Vec<_>>()
+                                        .join("")
+                                }
+                            )
                         )
                     })
                     .collect::<Vec<_>>()
@@ -86,20 +94,20 @@ impl<'a> YouDaoDict<'a> {
     // 打印 Wiki 结果
     fn print_wiki(&self) {
         if let Some(wand) = &self.wand_result {
-            print_section_title("Wiki", true);
-
             let entity = &wand.wand.entity;
             if let Some(wiki) = &entity.wiki_entry {
+                print_section_title("Wiki", true);
                 println!("{}", style(format!("[ {} ]", wiki.info.data.entry)).green());
                 println!("  {}", wiki.info.data.summary);
             }
             if let Some(person) = &entity.person_data {
+                print_section_title("Wiki", true);
                 if person.name.is_some() {
                     println!(
                         "{}",
                         style(format!("[ {} ]", person.name.as_ref().unwrap())).green()
                     );
-                    println!("  {}", person.nationality.as_ref().unwrap());
+                    println!("  国籍：{}", person.nationality.as_ref().unwrap());
                     println!("  {}", person.summary.as_ref().unwrap());
                 }
             }
@@ -144,7 +152,7 @@ struct Value<'a> {
 
 #[derive(Deserialize, Debug)]
 struct CL<'a> {
-    cl: Cow<'a, str>,
+    cl: Vec<Cow<'a, str>>,
 }
 
 #[derive(Deserialize, Debug)]
